@@ -51,3 +51,9 @@ ModuleNotFoundError: No module named 'git'
 2025-06-09 16:21:55,680 - INFO - 3. GitHub'a yukleniyor tamamlandi.
 2025-06-09 16:21:55,680 - INFO - Silinecek HTML dosyasi bulunamadi.
 2025-06-09 16:25:35,702 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-09 16:27:00,570 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-09 16:27:00,574 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-09 16:27:01,868 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-09 16:27:01,868 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-09 16:27:05,282 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-09 16:27:05,282 - INFO - Silinecek HTML dosyasi bulunamadi.
