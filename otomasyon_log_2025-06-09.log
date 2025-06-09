@@ -204,3 +204,23 @@ requests.exceptions.ConnectionError: ('Connection aborted.', RemoteDisconnected(
 2025-06-09 15:23:20,466 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
 2025-06-09 15:24:11,232 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
 2025-06-09 15:24:11,232 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-09 15:24:12,553 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-09 15:24:12,554 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-09 15:24:14,837 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-09 15:24:14,838 - INFO - Silinecek HTML dosyasi bulunamadi.
+2025-06-09 15:31:23,430 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-09 15:32:16,820 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-09 15:32:16,820 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-09 15:32:18,054 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-09 15:32:18,054 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-09 15:32:18,160 - ERROR - 3. GitHub'a yukleniyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\html_yayinlarini_yukle_final.py", line 46, in <module>
+    tam_temiz_html_yolu.write_text(tam_temiz_html_yukle_kodu)
+  File "C:\Users\yahya\anaconda3\Lib\pathlib.py", line 1048, in write_text
+    return f.write(data)
+           ^^^^^^^^^^^^^
+  File "C:\Users\yahya\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u011f' in position 162: character maps to <undefined>
+
