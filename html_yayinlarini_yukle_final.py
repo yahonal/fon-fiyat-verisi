@@ -6,31 +6,26 @@ repo_path = os.getcwd()
 
 repo = Repo(repo_path)
 
-# 1. Git'in takip ettigi tum mevcut .html dosyalarini bul ve sil
-tracked_files = [item.a_path for item in repo.index.diff("HEAD") if item.a_path.endswith(".html")]
+# 1. Git tarafında takip edilen .html dosyalarını listele
 html_files_in_repo = [f for f in repo.git.ls_files().splitlines() if f.endswith(".html")]
 
+# 2. Bunları fiziksel olarak sil (önceki html'ler)
 for file_path in html_files_in_repo:
     try:
         os.remove(file_path)
-        print(f"Git takipli eski HTML silindi: {file_path}")
+        print(f"Eski HTML silindi: {file_path}")
     except Exception as e:
         print(f"Silinemedi: {file_path} - {e}")
 
-# 2. Git'e bu silmeleri bildir
-repo.git.add(update=True)
-repo.index.commit("Onceki tum HTML dosyalari silindi")
+# 3. Silmeleri sahnele ve commit et
+repo.git.add("-A")
+repo.index.commit("Onceki HTML dosyalari silindi")
 
-# 3. Yeni html dosyalarini html_yayin klasorunden ekle
-new_html_files = [
-    os.path.join("html_yayin", f)
-    for f in os.listdir(html_dir)
-    if f.endswith(".html")
-]
-
-if new_html_files:
+# 4. convert_to_html.py ile yeniden uretilen dosyalar dizine gelir
+# Tekrar html_yayin klasorundeki yeni dosyalar sahnelenir
+if os.path.isdir(html_dir) and any(f.endswith(".html") for f in os.listdir(html_dir)):
     repo.git.add(html_dir)
-    repo.index.commit("Yeni HTML dosyalari yüklendi")
+    repo.index.commit("Yeni HTML dosyalari yuklendi")
     origin = repo.remote(name="origin")
     origin.push()
     print("Yeni HTML dosyalari yuklendi ve push edildi.")
