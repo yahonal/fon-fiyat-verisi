@@ -29,11 +29,3 @@ for filename in os.listdir(csv_folder):
         with open(html_filename, "w", encoding="utf-8") as f:
             f.write(html_full)
         converted_html_files.append(html_filename)
-
-for filename in os.listdir(csv_folder):
-    if filename.endswith("_fund.csv"):
-        try:
-            os.remove(os.path.join(csv_folder, filename))
-            print(f"CSV silindi: {filename}")
-        except Exception as e:
-            print(f"CSV silinirken hata: {filename} - {e}")

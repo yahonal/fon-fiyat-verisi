@@ -2,7 +2,6 @@ import subprocess
 import logging
 import datetime
 import os
-import glob
 
 today = datetime.datetime.now().strftime("%Y-%m-%d")
 log_file = f"otomasyon_log_{today}.log"
@@ -31,27 +30,11 @@ def run_script(script_path, description):
         print(f"{description} sirasinda hata olustu:\n{e.stderr}")
         raise
 
-def temizle_html_dosyalari():
-    html_dosyalar = glob.glob("*.html")
-    if not html_dosyalar:
-        print("Silinecek HTML dosyasi bulunamadi.")
-        logging.info("Silinecek HTML dosyasi bulunamadi.")
-    else:
-        for dosya in html_dosyalar:
-            try:
-                os.remove(dosya)
-                print(f"Silindi: {dosya}")
-                logging.info(f"Silindi: {dosya}")
-            except Exception as e:
-                print(f"{dosya} silinemedi: {e}")
-                logging.error(f"{dosya} silinemedi: {e}")
-
 def main():
     try:
-        run_script("tefas_fiyat_indir_pp_uyumlu_final.py", "1. TEFAS fiyat indiriliyor")
-        run_script("convert_to_html.py", "2. HTML dosyalari uretiliyor")
-        run_script("html_yayinlarini_yukle_final.py", "3. GitHub'a yukleniyor")
-        temizle_html_dosyalari()
+        run_script("tefas_fiyat_indir_pp_uyumlu_final_guncel.py", "1. TEFAS fiyat indiriliyor")
+        run_script("convert_to_html_guncel.py", "2. HTML dosyalari uretiliyor")
+        run_script("html_yayinlarini_yukle_final_guncel.py", "3. GitHub'a yukleniyor")
         print("Tum islem basariyla tamamlandi.")
     except Exception:
         print("Otomasyon islemi hata nedeniyle durdu. Log dosyasini kontrol edin.")
