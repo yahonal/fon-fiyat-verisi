@@ -1,0 +1,198 @@
+2025-06-12 06:05:11,073 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:05:17,756 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 06:05:17,756 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 06:05:19,550 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 06:05:19,558 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 06:05:23,298 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 06:06:07,773 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:10:08,114 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 06:10:08,132 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 06:10:09,969 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 06:10:09,969 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 06:10:13,629 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 06:14:42,268 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:15:03,557 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 06:15:03,557 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 06:15:05,083 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 06:15:05,083 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 06:15:08,085 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 06:16:01,861 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:16:04,248 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 06:16:04,248 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 06:16:05,881 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 06:16:05,897 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 06:16:09,010 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 06:19:43,900 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:20:06,014 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 06:20:06,024 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 06:20:07,594 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 06:20:07,600 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 06:20:10,725 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 06:20:54,290 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:20:56,792 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 06:20:56,802 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 06:20:58,325 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 06:20:58,325 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 06:21:01,497 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 06:32:08,462 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:32:10,495 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 87, in <module>
+    combined_data.sort_values("Date", inplace=True)
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\core\frame.py", line 7200, in sort_values
+    indexer = nargsort(
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\core\sorting.py", line 439, in nargsort
+    indexer = non_nan_idx[non_nans.argsort(kind=kind)]
+TypeError: '<' not supported between instances of 'str' and 'Timestamp'
+
+2025-06-12 06:32:35,495 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:32:36,966 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 87, in <module>
+    combined_data.sort_values("Date", inplace=True)
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\core\frame.py", line 7200, in sort_values
+    indexer = nargsort(
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\core\sorting.py", line 439, in nargsort
+    indexer = non_nan_idx[non_nans.argsort(kind=kind)]
+TypeError: '<' not supported between instances of 'str' and 'Timestamp'
+
+2025-06-12 06:33:41,235 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:33:42,901 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 06:33:42,902 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 06:33:44,243 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 06:33:44,243 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 06:33:47,001 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 06:35:54,646 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:35:56,433 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 06:35:56,435 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 06:35:57,585 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 06:35:57,587 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 06:35:59,991 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 06:39:25,210 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:39:25,473 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:39:26,608 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 22, in <module>
+    print(f"\n---\n{fon_adi} için i\u015flem ba\u015flat\u0131l\u0131yor...")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u015f' in position 17: character maps to <undefined>
+
+2025-06-12 06:39:26,810 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 22, in <module>
+    print(f"\n---\n{fon_adi} için i\u015flem ba\u015flat\u0131l\u0131yor...")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u015f' in position 17: character maps to <undefined>
+
+2025-06-12 06:39:57,097 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:39:58,392 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 22, in <module>
+    print(f"\n---\n{fon_adi} için i\u015flem baslatiliyor...")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u015f' in position 17: character maps to <undefined>
+
+2025-06-12 06:41:19,613 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:41:20,931 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 45, in <module>
+    print(f"Dosya {yedek_dosya} bulunamad\u0131. Tüm veriler {default_start_date}'den çekilecek.")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u0131' in position 28: character maps to <undefined>
+
+2025-06-12 06:41:51,805 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:41:53,091 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 71, in <module>
+    print(f"{fon_adi} için {month_start} ile {interval_end} aras\u0131ndaki veriler çekiliyor...")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u0131' in position 39: character maps to <undefined>
+
+2025-06-12 06:42:14,773 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:42:32,084 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py:83: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  new_data = pd.concat(new_data_frames, ignore_index=True)
+Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 98, in <module>
+    print(f"Veriler {yedek_dosya} dosyas\u0131na ASCII format\u0131nda kaydedildi.")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u0131' in position 27: character maps to <undefined>
+
+2025-06-12 06:55:20,359 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 06:58:30,945 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 06:58:30,959 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 06:58:32,227 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 06:58:32,227 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 06:58:34,607 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 07:01:07,069 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 07:01:08,373 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 30, in <module>
+    existing_data = pd.read_csv(yedek_dosya, parse_dates=['date'])
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\parsers\readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\parsers\readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\parsers\readers.py", line 1898, in _make_engine
+    return mapping[engine](f, **self.options)
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\parsers\c_parser_wrapper.py", line 161, in __init__
+    self._validate_parse_dates_presence(self.names)  # type: ignore[has-type]
+  File "C:\Users\yahya\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\pandas\io\parsers\base_parser.py", line 243, in _validate_parse_dates_presence
+    raise ValueError(
+ValueError: Missing column provided to 'parse_dates': 'date'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 38, in <module>
+    print(f"Dosya okuma hatas\u0131: {e}. Varsay\u0131lan baslangic tarihi ({default_start_date}) kullan\u0131lacak.")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u0131' in position 17: character maps to <undefined>
+
+2025-06-12 07:05:44,037 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 07:09:17,038 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 07:09:17,050 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 07:09:18,440 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 07:09:18,441 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 07:09:21,040 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 07:12:26,756 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 07:12:28,089 - ERROR - 1. TEFAS fiyat indiriliyor sirasinda hata: Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 37, in <module>
+    print(f"Yeni veri çekmeye ba\u015flanacak tarih: {new_start_date}")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u015f' in position 20: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\yahya\Documents\fund_price_upload\tefas_fiyat_indir_pp_uyumlu_final_guncel.py", line 39, in <module>
+    print(f"Dosya okuma hatas\u0131: {e}. Varsay\u0131lan ba\u015flang\u0131ç tarihi ({default_start_date}) kullan\u0131lacak.")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u0131' in position 17: character maps to <undefined>
+
+2025-06-12 07:14:44,475 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 07:18:44,488 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 07:18:44,499 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 07:18:46,032 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 07:18:46,033 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 07:18:48,435 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 22:00:26,201 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 22:00:32,333 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 22:00:32,333 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 22:00:33,893 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 22:00:33,893 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 22:00:37,521 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 22:11:43,335 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 22:11:45,127 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 22:11:45,129 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 22:11:46,681 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 22:11:46,681 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 22:11:49,388 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-06-12 22:40:47,211 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-06-12 22:40:49,214 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-06-12 22:40:49,214 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-06-12 22:40:50,737 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-06-12 22:40:50,737 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-06-12 22:40:53,948 - INFO - 3. GitHub'a yukleniyor tamamlandi.
