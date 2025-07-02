@@ -1,0 +1,31 @@
+2025-07-02 18:38:00,497 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-07-02 18:38:01,413 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-07-02 18:38:01,413 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-07-02 18:38:02,765 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-07-02 18:38:02,765 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-07-02 18:38:03,632 - ERROR - 3. GitHub'a yukleniyor sirasinda hata: Traceback (most recent call last):
+  File "/home/yahonal/Belgeler/Fund_Price_Upload/fon-fiyat-verisi/html_yayinlarini_yukle_final_guncel_linux.py", line 14, in <module>
+    repo.remote(name="origin").push()
+  File "/home/yahonal/anaconda3/lib/python3.11/site-packages/git/remote.py", line 1117, in push
+    return self._get_push_info(proc, progress, kill_after_timeout=kill_after_timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yahonal/anaconda3/lib/python3.11/site-packages/git/remote.py", line 926, in _get_push_info
+    proc.wait(stderr=stderr_text)
+  File "/home/yahonal/anaconda3/lib/python3.11/site-packages/git/cmd.py", line 602, in wait
+    raise GitCommandError(remove_password_if_present(self.args), status, errstr)
+git.exc.GitCommandError: Cmd('git') failed due to: exit code(128)
+  cmdline: git push --porcelain -- origin
+  stderr: 'fatal: Authentication failed for 'https://github.com/yahonal/fon-fiyat-verisi.git/''
+
+2025-07-02 18:39:28,391 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-07-02 18:39:29,165 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-07-02 18:39:29,165 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-07-02 18:39:30,619 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-07-02 18:39:30,619 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-07-02 18:39:31,953 - INFO - 3. GitHub'a yukleniyor tamamlandi.
+2025-07-02 18:40:49,168 - INFO - 1. TEFAS fiyat indiriliyor basliyor...
+2025-07-02 18:40:49,981 - INFO - 1. TEFAS fiyat indiriliyor tamamlandi.
+2025-07-02 18:40:49,982 - INFO - 2. HTML dosyalari uretiliyor basliyor...
+2025-07-02 18:40:51,070 - INFO - 2. HTML dosyalari uretiliyor tamamlandi.
+2025-07-02 18:40:51,070 - INFO - 3. GitHub'a yukleniyor basliyor...
+2025-07-02 18:40:52,425 - INFO - 3. GitHub'a yukleniyor tamamlandi.
