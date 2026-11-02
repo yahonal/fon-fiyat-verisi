@@ -1,0 +1,34 @@
+name: TEFAS erisim testi
+on:
+  push:
+    branches: [tefas-erisim-testi]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Erisim
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request, urllib.error, time, csv
+          U = "https://www.tefas.gov.tr/api/funds/fonFiyatBilgiGetir"
+          H = {"User-Agent": "Mozilla/5.0", "Content-Type": "application/json", "Accept": "application/json, text/plain, */*"}
+          kodlar = "AFA AFT TZL BGP ZBJ MAC HVS EID OPH AAV FYD TKM IIE ABE AET AH2 TMS MPP MJK AN1 SVB ST1 NPH RHS OMG AHI AK3 TP2".split()
+          for i, k in enumerate(kodlar):
+              periyod = 60 if k in ("AFT", "NPH") else 1
+              req = urllib.request.Request(U, data=json.dumps({"fonKodu": k, "dil": "TR", "periyod": periyod}).encode(), headers=H, method="POST")
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      govde = r.read()
+                      j = json.loads(govde)
+                  rows = j.get("resultList") or []
+                  if i == 0:
+                      print("anahtarlar:", list(j.keys()), {a: b for a, b in j.items() if a != "resultList"})
+                      print("ornek satirlar:", json.dumps(rows[:2], ensure_ascii=False), json.dumps(rows[-2:], ensure_ascii=False))
+                  print(k, r.status, "satir", len(rows), "ilk", rows[0] if rows and k == "AFT" else "", "son", rows[-1] if rows else None)
+              except urllib.error.HTTPError as e:
+                  print(k, "HTTP", e.code, e.read()[:300])
+              except Exception as e:
+                  print(k, "HATA", repr(e)[:300])
+              time.sleep(0.5)
+          PY
