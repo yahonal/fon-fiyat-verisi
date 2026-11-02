@@ -7,10 +7,11 @@ os.makedirs(html_output_dir, exist_ok=True)
 
 converted_html_files = []
 
-for filename in os.listdir(csv_folder):
-    if filename.endswith("_fund.csv"):
-        fund_code = filename.replace("_fund.csv", "")
-        df = pd.read_csv(os.path.join(csv_folder, filename))
+# Kaynak html_yayin CSV'leridir: fiyati cekilemeyen fonun yayini eski yedekle ezilmez.
+for filename in os.listdir(html_output_dir):
+    if filename.endswith(".csv"):
+        fund_code = filename.replace(".csv", "")
+        df = pd.read_csv(os.path.join(html_output_dir, filename))
 
         html_table = df.to_html(index=False)
         html_full = f"""<!DOCTYPE html>
