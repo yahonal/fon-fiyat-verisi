@@ -25,10 +25,15 @@ MAKS_GECIKME_GUN = 10
 DENEME_SAYISI = 3
 ISTEK_ZAMAN_ASIMI = (10, 30)  # saniye: baglanti, okuma
 ISTEK_ARASI_BEKLEME = 1  # saniye
+TEKRAR_BEKLEME = 15  # saniye, her denemede katlanir
 # TEFAS'a bu kadar fon ust uste ulasilamazsa kalanlar sonraki calismaya birakilir.
 MAKS_ARDISIK_BAGLANTI_HATASI = 3
 
-HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json, text/plain, */*"}
+# Tek baglanti acik tutulur: TEFAS kisa surede cok yeni baglantiyi zaman asimina dusuruyor.
+oturum = requests.Session()
+oturum.headers.update(
+    {"User-Agent": "Mozilla/5.0", "Accept": "application/json, text/plain, */*"}
+)
 
 hatali_fonlar = []
 ardisik_baglanti_hatasi = 0
@@ -55,9 +60,7 @@ def veri_cek(fon_kodu, periyot):
     govde = {"fonKodu": fon_kodu, "dil": "TR", "periyod": periyot}
     for deneme in range(1, DENEME_SAYISI + 1):
         try:
-            response = requests.post(
-                TEFAS_URL, json=govde, headers=HEADERS, timeout=ISTEK_ZAMAN_ASIMI
-            )
+            response = oturum.post(TEFAS_URL, json=govde, timeout=ISTEK_ZAMAN_ASIMI)
             response.raise_for_status()
             json_data = response.json()
             if json_data.get("errorMessage"):
@@ -67,7 +70,7 @@ def veri_cek(fon_kodu, periyot):
             if deneme == DENEME_SAYISI:
                 raise
             print(f"Deneme {deneme} basarisiz: {e}")
-            time.sleep(5 * deneme)
+            time.sleep(TEKRAR_BEKLEME * deneme)
 
 
 for fon_sira, fon_kodu in enumerate(fonlar):
