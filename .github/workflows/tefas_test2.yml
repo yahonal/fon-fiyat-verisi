@@ -5,28 +5,46 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
+    env:
+      TZ: Europe/Istanbul
     steps:
       - uses: actions/checkout@v7
-      - name: Hiz testi
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Gercek script
+        continue-on-error: true
+        run: python -u tefas_fiyat_indir_pp_uyumlu_final_guncel.py
+      - name: HTML
         run: |
-          python3 -u - <<'PY'
-          import json, time, urllib.request, urllib.error
+          python convert_to_html_guncel.py
+          echo "OZET html degisen: $(git status --porcelain html_yayin | wc -l)"
+          git diff --stat html_yayin | tail -1 | sed 's/^/OZET /'
+          git diff --numstat html_yayin | awk '$2>3{print "OZET cok satir silindi", $0}'
+          for f in AFT TP2 MAC; do echo "OZET $f $(wc -l < html_yayin/$f.csv) $(tail -1 html_yayin/$f.csv)"; done
+          git diff html_yayin/AFT.csv | grep -E '^[-+]20' | sed 's/^/OZET /'
+      - name: Karsilastir
+        run: |
+          git stash -q
+          python -u - <<'PY'
+          import requests, pandas as pd, time
           U = "https://www.tefas.gov.tr/api/funds/fonFiyatBilgiGetir"
-          H = {"User-Agent": "Mozilla/5.0", "Content-Type": "application/json", "Accept": "application/json, text/plain, */*"}
           kodlar = [l.strip() for l in open("fund_list.dat") if l.strip()]
-          bas = time.time()
-          for tur in (1, 2):
-              for k in kodlar:
-                  t = time.time()
-                  req = urllib.request.Request(U, data=json.dumps({"fonKodu": k, "dil": "TR", "periyod": 1}).encode(), headers=H, method="POST")
-                  try:
-                      with urllib.request.urlopen(req, timeout=10) as r:
-                          n = len(json.loads(r.read()).get("resultList") or [])
-                      print(f"HIZ t={t-bas:6.1f} tur={tur} {k} ok satir={n} sure={time.time()-t:.2f}")
-                  except urllib.error.HTTPError as e:
-                      print(f"HIZ t={t-bas:6.1f} tur={tur} {k} HTTP {e.code} {e.read()[:120]}")
-                  except Exception as e:
-                      print(f"HIZ t={t-bas:6.1f} tur={tur} {k} HATA {repr(e)[:120]} sure={time.time()-t:.2f}")
-                  time.sleep(1)
+          for k in kodlar:
+              time.sleep(2)
+              try:
+                  rows = requests.post(U, json={"fonKodu": k, "dil": "TR", "periyod": 12}, headers={"User-Agent": "Mozilla/5.0"}, timeout=(10, 30)).json()["resultList"] or []
+              except Exception as e:
+                  print(f"KARS {k} ISTEK HATASI {type(e).__name__}")
+                  continue
+              t = pd.DataFrame(rows)
+              t["Date"] = pd.to_datetime(t["tarih"])
+              z = t[t["fiyat"] <= 0]
+              t = t[t["fiyat"] > 0].set_index("Date")["fiyat"]
+              o = pd.read_csv(f"html_yayin/{k}.csv", parse_dates=["Date"]).set_index("Date")["Close"]
+              j = pd.concat([o.rename("o"), t.rename("t")], axis=1, join="inner")
+              fark = (j["t"] / j["o"] - 1).abs()
+              print(f"KARS {k} eski_son={o.index.max().date()} tefas_son={t.index.max().date()} sifir={list(z['tarih'].tail(3))} ortak={len(j)} fark>0.1%={int((fark>0.001).sum())} max={fark.max():.5f}@{str(fark.idxmax())[:10]}")
           PY
