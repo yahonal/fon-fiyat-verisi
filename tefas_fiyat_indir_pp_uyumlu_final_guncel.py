@@ -97,17 +97,21 @@ for fon_sira, fon_kodu in enumerate(fonlar):
 
     periyot = periyot_sec(existing_data)
 
+    son_fiyat_sifir = False  # TEFAS'in kendisi 0 yayinliyorsa hata sayilmaz
     try:
         df = pd.DataFrame(veri_cek(fon_kodu, periyot))
         ardisik_baglanti_hatasi = 0
         if not df.empty:
             df.rename(columns={"tarih": "Date", "fiyat": "Close"}, inplace=True)
             df["Date"] = pd.to_datetime(df["Date"]).dt.normalize()
-            # TEFAS bazen fiyati 0 dondurur (or. TP2); gecerli fiyat ustune yazilmasin
+            son_fiyat_sifir = df.sort_values("Date")["Close"].iloc[-1] <= 0
+            # TEFAS bazi fonlarda fiyati 0 dondurur (or. TP2); gecerli fiyat ustune yazilmasin
             df = df[(df["Close"] > 0) & (df["Date"].dt.date <= today)]
         if df.empty:
             print(f"{fon_kodu} icin yeni veri yok.")
-            if bayat_mi(existing_data):
+            if son_fiyat_sifir:
+                print(f"UYARI: TEFAS {fon_kodu} icin 0 fiyat yayinliyor.")
+            elif bayat_mi(existing_data):
                 print(f"UYARI: {fon_kodu} verisi guncel degil.")
                 hatali_fonlar.append(fon_kodu)
             continue
@@ -142,7 +146,10 @@ for fon_sira, fon_kodu in enumerate(fonlar):
 
     if bayat_mi(full_data):
         print(f"UYARI: {fon_kodu} son fiyati {full_data['Date'].max().date()} tarihli.")
-        hatali_fonlar.append(fon_kodu)
+        if son_fiyat_sifir:
+            print(f"UYARI: TEFAS {fon_kodu} icin 0 fiyat yayinliyor.")
+        else:
+            hatali_fonlar.append(fon_kodu)
 
 # Hatali fon varsa cikis kodu 1 olur; workflow digerlerini yukleyip kirmizi biter.
 if hatali_fonlar:
