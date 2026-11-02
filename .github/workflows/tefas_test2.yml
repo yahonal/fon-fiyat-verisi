@@ -1,0 +1,45 @@
+name: TEFAS karsilastirma testi
+on:
+  push:
+    branches: [tefas-test-2]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Europe/Istanbul
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Karsilastir
+        run: |
+          python - <<'PY'
+          import requests, pandas as pd, time
+          U = "https://www.tefas.gov.tr/api/funds/fonFiyatBilgiGetir"
+          kodlar = [l.strip() for l in open("fund_list.dat") if l.strip()]
+          for k in kodlar:
+              rows = requests.post(U, json={"fonKodu": k, "dil": "TR", "periyod": 60}, headers={"User-Agent": "Mozilla/5.0"}, timeout=30).json()["resultList"] or []
+              t = pd.DataFrame(rows)
+              t["Date"] = pd.to_datetime(t["tarih"])
+              z = t[t["fiyat"] <= 0]
+              t = t[t["fiyat"] > 0].set_index("Date")["fiyat"]
+              o = pd.read_csv(f"html_yayin/{k}.csv", parse_dates=["Date"]).set_index("Date")["Close"]
+              j = pd.concat([o.rename("o"), t.rename("t")], axis=1, join="inner")
+              fark = (j["t"] / j["o"] - 1).abs()
+              s = o.copy(); s.index = s.index + pd.Timedelta(days=1)
+              j2 = pd.concat([s.rename("o"), t.rename("t")], axis=1, join="inner")
+              kay = int(((j2["t"] / j2["o"] - 1).abs() < 1e-5).sum())
+              print(f"KARS {k} eski={len(o)}..{o.index.max().date()} tefas={len(t)}..{t.index.max().date()} sifir={len(z)}:{[str(d)[:10] for d in z['tarih'].tail(3)]} ortak={len(j)} esit={int((fark<1e-6).sum())} fark>0.1%={int((fark>0.001).sum())} maxfark={fark.max():.5f}@{str(fark.idxmax())[:10] if len(fark) else ''} kayma1={kay} eksik_tefasta={len(j)-len(o[o.index>=t.index.min()])}")
+              time.sleep(0.3)
+          PY
+      - name: Gercek script
+        run: |
+          set +e
+          python tefas_fiyat_indir_pp_uyumlu_final_guncel.py | grep -E "satir geldi|hatasi|UYARI|Hatali|veri yok" | sort | uniq -c | sort -rn | head -40
+          echo "script=${PIPESTATUS[0]}"
+          python convert_to_html_guncel.py; echo "convert=$?"
+          git status --porcelain html_yayin | cut -c1-2 | sort | uniq -c
+          git diff --stat html_yayin | tail -1
+          git diff html_yayin/AFT.csv | tail -14
