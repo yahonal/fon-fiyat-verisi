@@ -17,7 +17,7 @@ concurrency:
 jobs:
   guncelle:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       TZ: Europe/Istanbul
     steps:
