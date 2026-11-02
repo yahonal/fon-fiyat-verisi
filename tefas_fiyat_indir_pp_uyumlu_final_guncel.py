@@ -23,12 +23,15 @@ GERI_BAKIS_GUN = 10
 # Son fiyat bundan eskiyse fon hatali sayilir (uzun bayram tatilleri icin 10 gun).
 MAKS_GECIKME_GUN = 10
 DENEME_SAYISI = 3
-ISTEK_ZAMAN_ASIMI = 30  # saniye
-ISTEK_ARASI_BEKLEME = 0.5  # saniye
+ISTEK_ZAMAN_ASIMI = (10, 30)  # saniye: baglanti, okuma
+ISTEK_ARASI_BEKLEME = 1  # saniye
+# TEFAS'a bu kadar fon ust uste ulasilamazsa kalanlar sonraki calismaya birakilir.
+MAKS_ARDISIK_BAGLANTI_HATASI = 3
 
 HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json, text/plain, */*"}
 
 hatali_fonlar = []
+ardisik_baglanti_hatasi = 0
 
 
 def bayat_mi(data):
@@ -67,7 +70,12 @@ def veri_cek(fon_kodu, periyot):
             time.sleep(5 * deneme)
 
 
-for fon_kodu in fonlar:
+for fon_sira, fon_kodu in enumerate(fonlar):
+    if ardisik_baglanti_hatasi >= MAKS_ARDISIK_BAGLANTI_HATASI:
+        print(f"TEFAS'a ulasilamiyor, kalan fonlar atlandi: {', '.join(fonlar[fon_sira:])}")
+        hatali_fonlar.extend(fonlar[fon_sira:])
+        break
+
     print(f"---\n{fon_kodu} icin islem baslatiliyor...")
 
     yedek_dosya = f"{fon_kodu}_fund.csv"
@@ -91,6 +99,7 @@ for fon_kodu in fonlar:
 
     try:
         df = pd.DataFrame(veri_cek(fon_kodu, periyot))
+        ardisik_baglanti_hatasi = 0
         if not df.empty:
             df.rename(columns={"tarih": "Date", "fiyat": "Close"}, inplace=True)
             df["Date"] = pd.to_datetime(df["Date"]).dt.normalize()
@@ -105,6 +114,8 @@ for fon_kodu in fonlar:
         df = df[["Date", "Close"]].sort_values("Date")
         print(f"TEFAS'tan {len(df)} satir geldi, son tarih: {df['Date'].max().date()}")
     except Exception as e:
+        if isinstance(e, (requests.exceptions.ConnectionError, requests.exceptions.Timeout)):
+            ardisik_baglanti_hatasi += 1
         print(f"{fon_kodu} icin veri cekme hatasi: {e}")
         hatali_fonlar.append(fon_kodu)
         continue
