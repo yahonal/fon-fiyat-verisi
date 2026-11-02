@@ -1,9 +1,10 @@
+import math
 import os
 import sys
 import time
 import requests
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # html_yayin silinmez: otomatik calismada gecmis veri buradaki CSV'lerden okunur.
 # Bir fon hata verirse onceki yayini da yerinde kalir.
@@ -14,19 +15,23 @@ with open("fund_list.dat", "r") as file:
     fonlar = [line.strip() for line in file if line.strip()]
 
 today = datetime.today().date()
-# Fon fiyatlari o gunun tarihiyle yayinlanir (onceki gunun kapanisi ile hesaplanir),
-# bu yuzden bitis tarihi olarak bugunu kullaniyoruz. toDate haric tutuluyorsa diye +1 gun.
-end_date = today + timedelta(days=1)
-default_start_date = pd.to_datetime("2015-01-01").date()
-# Son birkac gunu her seferinde yeniden cek: hem dar aralik sorununu onler
-# hem de sonradan duzeltilen fiyatlari gunceller.
+TEFAS_URL = "https://www.tefas.gov.tr/api/funds/fonFiyatBilgiGetir"
+# TEFAS sadece bu ay degerlerini kabul eder; en fazla 5 yillik gecmis verir.
+TEFAS_PERIYOTLARI = (1, 3, 6, 12, 36, 60)
+# Son birkac gunu her seferinde yeniden cek: sonradan duzeltilen fiyatlari gunceller.
 GERI_BAKIS_GUN = 10
 # Son fiyat bundan eskiyse fon hatali sayilir (uzun bayram tatilleri icin 10 gun).
 MAKS_GECIKME_GUN = 10
 DENEME_SAYISI = 3
-ISTEK_ZAMAN_ASIMI = 30  # saniye
+ISTEK_ZAMAN_ASIMI = (10, 30)  # saniye: baglanti, okuma
+ISTEK_ARASI_BEKLEME = 1  # saniye
+# TEFAS'a bu kadar fon ust uste ulasilamazsa kalanlar sonraki calismaya birakilir.
+MAKS_ARDISIK_BAGLANTI_HATASI = 3
+
+HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json, text/plain, */*"}
 
 hatali_fonlar = []
+ardisik_baglanti_hatasi = 0
 
 
 def bayat_mi(data):
@@ -35,12 +40,29 @@ def bayat_mi(data):
     return (today - data["Date"].max().date()).days > MAKS_GECIKME_GUN
 
 
-def veri_cek(url, headers):
+def periyot_sec(data):
+    if data.empty:
+        return TEFAS_PERIYOTLARI[-1]
+    gerekli_gun = (today - data["Date"].max().date()).days + GERI_BAKIS_GUN
+    gerekli_ay = math.ceil(gerekli_gun / 28)
+    for periyot in TEFAS_PERIYOTLARI:
+        if periyot >= gerekli_ay:
+            return periyot
+    return TEFAS_PERIYOTLARI[-1]
+
+
+def veri_cek(fon_kodu, periyot):
+    govde = {"fonKodu": fon_kodu, "dil": "TR", "periyod": periyot}
     for deneme in range(1, DENEME_SAYISI + 1):
         try:
-            response = requests.get(url, headers=headers, timeout=ISTEK_ZAMAN_ASIMI)
+            response = requests.post(
+                TEFAS_URL, json=govde, headers=HEADERS, timeout=ISTEK_ZAMAN_ASIMI
+            )
             response.raise_for_status()
-            return response.json()["data"]
+            json_data = response.json()
+            if json_data.get("errorMessage"):
+                raise ValueError(json_data["errorMessage"])
+            return json_data.get("resultList") or []
         except Exception as e:
             if deneme == DENEME_SAYISI:
                 raise
@@ -48,7 +70,12 @@ def veri_cek(url, headers):
             time.sleep(5 * deneme)
 
 
-for fon_kodu in fonlar:
+for fon_sira, fon_kodu in enumerate(fonlar):
+    if ardisik_baglanti_hatasi >= MAKS_ARDISIK_BAGLANTI_HATASI:
+        print(f"TEFAS'a ulasilamiyor, kalan fonlar atlandi: {', '.join(fonlar[fon_sira:])}")
+        hatali_fonlar.extend(fonlar[fon_sira:])
+        break
+
     print(f"---\n{fon_kodu} icin islem baslatiliyor...")
 
     yedek_dosya = f"{fon_kodu}_fund.csv"
@@ -68,37 +95,36 @@ for fon_kodu in fonlar:
         print("Mevcut dosya yok, yeni olusturulacak.")
         existing_data = pd.DataFrame(columns=["Date", "Close"])
 
-    if existing_data.empty:
-        new_start_date = default_start_date
-    else:
-        new_start_date = existing_data["Date"].max().date() - timedelta(days=GERI_BAKIS_GUN)
+    periyot = periyot_sec(existing_data)
 
-    # Fundfy sadece genis araliklar destekliyor, tum aralik icin tek seferde cek
-    from_date = new_start_date.strftime("%Y-%m-%d")
-    to_date = end_date.strftime("%Y-%m-%d")
-    url = f"https://api.fundfy.net/api/v1/fund/detail/graph/chart/{fon_kodu}?isDollar=false&fromDate={from_date}&toDate={to_date}"
-    headers = {"User-Agent": "Mozilla/5.0"}
-
+    son_fiyat_sifir = False  # TEFAS'in kendisi 0 yayinliyorsa hata sayilmaz
     try:
-        df = pd.DataFrame(veri_cek(url, headers))
+        df = pd.DataFrame(veri_cek(fon_kodu, periyot))
+        ardisik_baglanti_hatasi = 0
+        if not df.empty:
+            df.rename(columns={"tarih": "Date", "fiyat": "Close"}, inplace=True)
+            df["Date"] = pd.to_datetime(df["Date"]).dt.normalize()
+            son_fiyat_sifir = df.sort_values("Date")["Close"].iloc[-1] <= 0
+            # TEFAS bazi fonlarda fiyati 0 dondurur (or. TP2); gecerli fiyat ustune yazilmasin
+            df = df[(df["Close"] > 0) & (df["Date"].dt.date <= today)]
         if df.empty:
             print(f"{fon_kodu} icin yeni veri yok.")
-            if bayat_mi(existing_data):
+            if son_fiyat_sifir:
+                print(f"UYARI: TEFAS {fon_kodu} icin 0 fiyat yayinliyor.")
+            elif bayat_mi(existing_data):
                 print(f"UYARI: {fon_kodu} verisi guncel degil.")
                 hatali_fonlar.append(fon_kodu)
             continue
-        df.rename(columns={"date": "Date", "value": "Close"}, inplace=True)
-        df["Date"] = pd.to_datetime(df["Date"])
-        if df["Date"].dt.tz is not None:
-            df["Date"] = df["Date"].dt.tz_localize(None)
-        df["Date"] = df["Date"].dt.normalize()
-        df = df[df["Date"].dt.date <= today]  # gelecek tarihli kayit varsa at
         df = df[["Date", "Close"]].sort_values("Date")
-        print(f"API'den {len(df)} satir geldi, son tarih: {df['Date'].max().date() if not df.empty else '-'}")
+        print(f"TEFAS'tan {len(df)} satir geldi, son tarih: {df['Date'].max().date()}")
     except Exception as e:
+        if isinstance(e, (requests.exceptions.ConnectionError, requests.exceptions.Timeout)):
+            ardisik_baglanti_hatasi += 1
         print(f"{fon_kodu} icin veri cekme hatasi: {e}")
         hatali_fonlar.append(fon_kodu)
         continue
+    finally:
+        time.sleep(ISTEK_ARASI_BEKLEME)
 
     # Yeni verileri birlestir
     frames = [df]
@@ -120,7 +146,10 @@ for fon_kodu in fonlar:
 
     if bayat_mi(full_data):
         print(f"UYARI: {fon_kodu} son fiyati {full_data['Date'].max().date()} tarihli.")
-        hatali_fonlar.append(fon_kodu)
+        if son_fiyat_sifir:
+            print(f"UYARI: TEFAS {fon_kodu} icin 0 fiyat yayinliyor.")
+        else:
+            hatali_fonlar.append(fon_kodu)
 
 # Hatali fon varsa cikis kodu 1 olur; workflow digerlerini yukleyip kirmizi biter.
 if hatali_fonlar:
