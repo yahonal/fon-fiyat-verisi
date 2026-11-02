@@ -1,0 +1,61 @@
+name: Fon fiyatlarini guncelle
+
+on:
+  schedule:
+    # Saatler UTC. Turkiye = UTC+3.
+    - cron: "17 16 * * 1-5"  # Pzt-Cum 19:17 TR
+    - cron: "43 4 * * 2-6"   # Sal-Cmt 07:43 TR, aksam yetismeyen fiyatlar icin
+  workflow_dispatch:  # Actions sekmesinden elle calistirma
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fiyat-guncelle
+  cancel-in-progress: false
+
+jobs:
+  guncelle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TZ: Europe/Istanbul
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Paketleri kur
+        run: pip install -r requirements.txt
+
+      # Bir fon hata verse de digerleri yuklensin diye is burada durmaz.
+      - name: Fiyatlari cek
+        id: fiyat
+        continue-on-error: true
+        run: python tefas_fiyat_indir_pp_uyumlu_final_guncel.py
+
+      - name: HTML uret
+        run: python convert_to_html_guncel.py
+
+      - name: Degisiklikleri yukle
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add html_yayin
+          if git diff --cached --quiet; then
+            echo "Yeni veri yok, commit atilmadi."
+            exit 0
+          fi
+          git commit -m "Fon fiyatlari guncellendi: $(date +%F)"
+          git pull --rebase --autostash
+          git push
+
+      # Calismayi kirmizi bitirir; GitHub basarisizlik bildirimi gonderir.
+      - name: Fiyat hatasini bildir
+        if: steps.fiyat.outcome == 'failure'
+        run: |
+          echo "Bazi fonlar guncellenemedi. 'Fiyatlari cek' adiminin loguna bakin."
+          exit 1
